@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-//me me big boy
+
 import static serializers.HueLightSerializer.serialize;
 
 public class HueController {
