@@ -1,0 +1,5 @@
+name: HueLightPlugin
+version: 0.0.1
+author: Parker Kary
+main: pluginbase.PluginBase
+api-version: 1.15

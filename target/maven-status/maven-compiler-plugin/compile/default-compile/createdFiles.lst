@@ -1,0 +1,16 @@
+dtos\HueLight$HueLightBuilder.class
+listeners\LampLightEventListener.class
+pluginbase\PluginBase.class
+dtos\HueCapabilityControl.class
+serializers\HueLightSerializer.class
+dtos\HueCapabilityStreaming.class
+dtos\HueSwUpdate.class
+Main.class
+dtos\HueConfig.class
+listeners\PlayerListener.class
+dtos\HueLight.class
+dtos\HueLightState.class
+dtos\HueLightCapabilities.class
+dtos\HueConfigStartup.class
+controllers\HueController.class
+listeners\LampAssignListener.class
