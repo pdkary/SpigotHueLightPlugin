@@ -9,3 +9,4 @@ Build the jar artifact including dependencies and plugin.yml
 ## Usage
 Drop the plugin jar into Spigot server `plugins` folder
 
+# You little scamp, you scrolled too far
