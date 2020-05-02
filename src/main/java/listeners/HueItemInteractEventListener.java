@@ -1,46 +1,32 @@
 package listeners;
 
-import controllers.HueController;
-import dtos.HueLight;
+import controllers.HueHttpController;
 import org.bukkit.Material;
-import org.bukkit.block.data.type.Switch;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
-import utils.SuperNBT;
+import transformers.BlockItemDataTransformer;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 public class HueItemInteractEventListener implements Listener {
+    public static String hue_id = "hue_id";
     public static Material POWERED_BLOCK = Material.REDSTONE_LAMP;
 
     private final Logger logger;
-    private final HueController hueController;
+    private final HueHttpController hueHttpController;
 
-    public HueItemInteractEventListener(HueController hueController, Logger logger) {
+    public HueItemInteractEventListener(HueHttpController hueHttpController, Logger logger) {
         this.logger = logger;
-        this.hueController = hueController;
+        this.hueHttpController = hueHttpController;
     }
 
     @EventHandler
-    public void onBlockRedstoneEvent(BlockRedstoneEvent blockRedstoneEvent) throws IOException {
+    public void onBlockRedstoneEvent(BlockRedstoneEvent blockRedstoneEvent) {
         Material blockType = blockRedstoneEvent.getBlock().getType();
         if (blockType.equals(POWERED_BLOCK)) {
-            SuperNBT powerBlockNBT = SuperNBT.get(blockRedstoneEvent.getBlock());
-            String HueID = powerBlockNBT.getString("hue_id");
-            HueLight light = hueController.getLightByID(HueID);
-            if (light != null) hueController.toggleLight(light);
-        }
-        if (blockType.data.equals(Switch.class)) {
-
+            String HueID = BlockItemDataTransformer.getValue(blockRedstoneEvent.getBlock(), hue_id);
+            if (HueID != null) hueHttpController.toggleLight(HueID);
         }
     }
-
-//    @EventHandler
-//    public Block getBlockWithButton(Switch button){
-//        BlockFace blockFace = button.getFacing();
-//    }
-
-
 }

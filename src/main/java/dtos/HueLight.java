@@ -1,5 +1,6 @@
 package dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
@@ -9,6 +10,7 @@ import lombok.Data;
 @Data
 @JsonDeserialize(builder = HueLight.HueLightBuilder.class)
 @Builder(builderClassName = "HueLightBuilder", toBuilder = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class HueLight {
     @JsonProperty("ID")
     public String ID;
