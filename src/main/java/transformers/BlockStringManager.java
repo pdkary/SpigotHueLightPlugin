@@ -8,10 +8,11 @@ import org.bukkit.plugin.Plugin;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BlockStringManager implements BlockItemDataManager<Block,String> {
+public class BlockStringManager implements BlockItemDataManager<Block, String> {
     public Block block;
     private Plugin plugin;
-    private Map<String,String> data;
+    private Map<String, String> data;
+
     public BlockStringManager(Block block, Plugin plugin) {
         this.block = block;
         this.plugin = plugin;
@@ -20,14 +21,14 @@ public class BlockStringManager implements BlockItemDataManager<Block,String> {
 
     @Override
     public BlockStringManager setValue(String key, String Value) {
-        this.block.setMetadata(key,new FixedMetadataValue(this.plugin,Value));
-        this.data.put(key,Value);
+        this.block.setMetadata(key, new FixedMetadataValue(this.plugin, Value));
+        this.data.put(key, Value);
         return this;
     }
 
     @Override
     public String getValue(String key) {
-        if(this.hasKey(key))return this.block
+        if (this.hasKey(key)) return this.block
                 .getMetadata(key)
                 .get(0)
                 .asString();

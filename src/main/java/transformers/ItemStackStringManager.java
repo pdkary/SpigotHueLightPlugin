@@ -7,10 +7,10 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ItemStackStringManager implements BlockItemDataManager<ItemStack,String> {
+public class ItemStackStringManager implements BlockItemDataManager<ItemStack, String> {
     public ItemStack stack;
     public SafeNBT stackNBT;
-    private Map<String,String> data;
+    private Map<String, String> data;
 
     public ItemStackStringManager(ItemStack stack) {
         this.stack = stack;
@@ -20,14 +20,14 @@ public class ItemStackStringManager implements BlockItemDataManager<ItemStack,St
 
     @Override
     public ItemStackStringManager setValue(String key, String value) {
-        this.stackNBT.setString(key,value);
-        this.data.put(key,value);
+        this.stackNBT.setString(key, value);
+        this.data.put(key, value);
         return this;
     }
 
     @Override
     public String getValue(String key) {
-        if(this.hasKey(key))return this.stackNBT.getString(key);
+        if (this.hasKey(key)) return this.stackNBT.getString(key);
         else return null;
     }
 

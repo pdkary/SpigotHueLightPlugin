@@ -13,7 +13,7 @@ public class PluginBase extends JavaPlugin {
     @Override
     public void onEnable() {
         BlockItemDataTransformer.setPlugin(this);
-        huePluginController = new HuePluginController("192.168.2.17", "nDUnfbZceW0m6wrMM3TK8rAbr2Sqgfu5N8LtdiMQ", getLogger());
+        huePluginController = new HuePluginController("nDUnfbZceW0m6wrMM3TK8rAbr2Sqgfu5N8LtdiMQ", getLogger());
         getLogger().info("Parker's Plugin is running");
         getServer().getPluginManager().registerEvents(new HueItemAssignListener(huePluginController, getLogger(), this), this);
         getServer().getPluginManager().registerEvents(new HueItemInteractEventListener(huePluginController.httpController, getLogger()), this);

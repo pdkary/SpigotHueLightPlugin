@@ -5,6 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.squareup.okhttp.*;
 import dtos.HueLight;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import transformers.BlockItemDataTransformer;
+import utils.ItemMetaBuilder;
 
 import java.io.IOException;
 import java.net.URL;
@@ -12,23 +19,32 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static serializers.HueLightSerializer.serialize;
 
 public class HueHttpController {
 
+    public static Material TRIGGER = Material.REDSTONE_LAMP;
+    private static final String hue_id = "hue_id";
+
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static final ObjectMapper mapper = new ObjectMapper();
     private static final OkHttpClient client = new OkHttpClient();
+
+
+
     private final String username;
     private final Logger logger;
     private String ip;
 
-    public HueHttpController(String ip, String username, Logger logger) {
+    public HueHttpController(String username, Logger logger) {
         this.logger = logger;
-        this.ip = ip;
         this.username = username;
+        client.setConnectTimeout(500, TimeUnit.MILLISECONDS);
     }
 
     public void setIp(String ip) {
@@ -95,4 +111,25 @@ public class HueHttpController {
         }
         return true;
     }
+
+    public Inventory getHueInventoryMenu() throws IOException {
+        List<HueLight> lights = getLights();
+        Integer inventorySize = 9 * ((9 % lights.size()) + 1);
+        Inventory assignmentInventory = Bukkit.createInventory(null, inventorySize, "Hue Light Assigner");
+        for (HueLight light : lights) {
+            ItemStack stack = new ItemStack(TRIGGER, 1);
+
+            ItemMeta meta = new ItemMetaBuilder(stack.getItemMeta())
+                    .setDisplayName(light.name)
+                    .setLore(light.productId)
+                    .get();
+
+            stack.setItemMeta(meta);
+            stack = BlockItemDataTransformer.setString(stack, hue_id, light.ID);
+            assignmentInventory.setItem(lights.indexOf(light), stack);
+        }
+        return assignmentInventory;
+    }
+
+
 }

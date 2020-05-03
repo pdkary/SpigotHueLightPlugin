@@ -13,41 +13,36 @@ import utils.ItemMetaBuilder;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class HuePluginController {
-    public static Material TRIGGER = Material.REDSTONE_LAMP;
-    private final String hue_id = "hue_id";
-    private final String ip;
+    private static final String IPADDRESS_PATTERN =
+            "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+
     private final String username;
     public HueHttpController httpController;
+    private Pattern pattern;
 
-    public HuePluginController(String ip, String username, Logger logger) {
-
-        this.ip = ip;
+    public HuePluginController(String username, Logger logger) {
+        this.pattern = Pattern.compile(IPADDRESS_PATTERN);
         this.username = username;
-        this.httpController = new HueHttpController(this.ip, this.username, logger);
+        this.httpController = new HueHttpController(this.username, logger);
     }
 
-    public Inventory getHueInventoryMenu() throws IOException {
-        List<HueLight> lights = httpController.getLights();
-        Integer inventorySize = 9 * ((9 % lights.size()) + 1);
-        Inventory assignmentInventory = Bukkit.createInventory(null, inventorySize, "Hue Light Assigner");
-        for (HueLight light : lights) {
-            ItemStack stack = new ItemStack(TRIGGER, 1);
-
-            ItemMeta meta = new ItemMetaBuilder(stack.getItemMeta())
-                    .setDisplayName(light.name)
-                    .setLore(light.productId)
-                    .get();
-
-            stack.setItemMeta(meta);
-            stack = BlockItemDataTransformer.setString(stack,hue_id,light.ID);
-            assignmentInventory.setItem(lights.indexOf(light), stack);
+    public void openAssignmentInventory(Player player) {
+        try {
+            player.openInventory(httpController.getHueInventoryMenu());
+        } catch (IOException e){
+            player.sendMessage("HueLightPlugin Error: Invalid or Missing IP address");
         }
-        return assignmentInventory;
     }
 
-    public void openAssignmentInventory(Player player) throws IOException {
-        player.openInventory(getHueInventoryMenu());
+    public boolean validateIP(String ip) {
+        Matcher matcher = pattern.matcher(ip);
+        return matcher.matches();
     }
 }
