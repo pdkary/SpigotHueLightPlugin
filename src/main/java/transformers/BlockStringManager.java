@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BlockStringManager implements BlockItemDataManager<Block, String> {
+    private final Plugin plugin;
+    private final Map<String, String> data;
     public Block block;
-    private Plugin plugin;
-    private Map<String, String> data;
 
     public BlockStringManager(Block block, Plugin plugin) {
         this.block = block;

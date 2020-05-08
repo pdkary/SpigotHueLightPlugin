@@ -1,19 +1,17 @@
-import controllers.HueHttpController;
-import dtos.HueLight;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.logging.Logger;
+import com.jojodmo.safeNBT.api.SafeNBT;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 public class Main {
-    public static Logger logger = Logger.getLogger("Main");
-    private static final HueHttpController controller = new HueHttpController("nDUnfbZceW0m6wrMM3TK8rAbr2Sqgfu5N8LtdiMQ", logger);
+    public static void main(String[] args) {
+        ItemStack item = new ItemStack(Material.STICK);
+        SafeNBT safeNBT = SafeNBT.get(item);
 
-    public static void main(String[] args) throws IOException {
-        List<HueLight> lights = controller.getLights();
-        for (HueLight h : lights) {
-            System.out.println(h);
-            controller.toggleLight(h);
-        }
+        safeNBT.setString("Test", "test");
+
+        item = safeNBT.apply(item);
+
+        SafeNBT newSafeNbt = SafeNBT.get(item);
+        assert (newSafeNbt.getString("Test").equals("test"));
     }
 }

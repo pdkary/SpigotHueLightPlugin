@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ItemStackStringManager implements BlockItemDataManager<ItemStack, String> {
+    private final Map<String, String> data;
     public ItemStack stack;
     public SafeNBT stackNBT;
-    private Map<String, String> data;
 
     public ItemStackStringManager(ItemStack stack) {
         this.stack = stack;
