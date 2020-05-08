@@ -69,10 +69,6 @@ public class HueEventListener implements Listener {
         if (inHand.getType().equals(Material.AIR)) {
             if (clickedBlock != null && clickedBlock.getType().equals(ASSIGNER)) {
                 getIpFromSign(clickedBlock);
-<<<<<<< HEAD
-=======
-
->>>>>>> 06c91b0b3998d4b14ceab3ef80c4bcc25e38f649
                 pluginController.openAssignmentInventory(playerInteractEvent.getPlayer());
             }
         }
@@ -84,12 +80,6 @@ public class HueEventListener implements Listener {
                 .stream()
                 .filter(pluginController::validateIP)
                 .collect(Collectors.joining());
-<<<<<<< HEAD
-=======
-        for (int i = 0; i < 5; i++) {
-            System.out.println("MUNGABUNGA");
-        }
->>>>>>> 06c91b0b3998d4b14ceab3ef80c4bcc25e38f649
         if (!ip.equals("")) httpController.setIp(ip);
     }
 
